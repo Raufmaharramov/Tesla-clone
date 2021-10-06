@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+import { selectCars } from "../features/car/carSlice";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [burgerStatus, setBurgerStatus] = useState(false);
+  const cars = useSelector(selectCars);
 
   return (
     <Container>
@@ -14,45 +14,36 @@ function Header() {
         <img src="/images/logo.svg" />
       </a>
       <Menu>
-        <a href="#">Model S</a>
-        <a href="#">Model 3</a>
-        <a href="#">Model X</a>
-        <a href="#">Model Y</a>
-        <a href="#">Solar Roof </a>
-        <a href="#">Solar Panels </a>
+        {cars &&
+          cars.map((car, index) => (
+            <a key={index} href="#">
+              {car}
+            </a>
+          ))}
       </Menu>
-
       <RightMenu>
-        <Stack spacing={0} direction="row">
-          <CustomMenu onClick={() => setBurgerStatus(true)} size="small" color="inherit">
-            <a href="#">Menu</a>
-          </CustomMenu>
-        </Stack>
+        <HideMenu>
+          <a href="#">Shop</a>
+          <a href="#">Account</a>
+        </HideMenu>
+        <a onClick={() => setBurgerStatus(true)} href="#">
+          Menu
+        </a>
       </RightMenu>
 
       <BurgerNav show={burgerStatus}>
         <CloseWrapper>
           <CustomClose onClick={() => setBurgerStatus(false)} />
         </CloseWrapper>
-
-        <li>
-          <a href="#">Model S</a>
-        </li>
-        <li>
-          <a href="#">Model 3</a>
-        </li>
-        <li>
-          <a href="#">Model X</a>
-        </li>
-        <li>
-          <a href="#">Model Y</a>
-        </li>
-        <li>
-          <a href="#">Solar Roof</a>
-        </li>
-        <li>
-          <a href="#">Solar Panels</a>
-        </li>
+        {cars &&
+          cars.map((car, index) => (
+            <li>
+              {" "}
+              <a key={index} href="#">
+                {car}
+              </a>
+            </li>
+          ))}
         <li>
           <a href="#">Existing Inventory</a>
         </li>
@@ -120,12 +111,38 @@ const Menu = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-
+  a:hover {
+    background-color: #5c7b85;
+    border-radius: 12px;
+    box-shadow: 0 0 0px 4px #5c7b85;
+  }
   a {
     font-weight: 600;
+    font-size: 13px;
     text-transform: uppercase;
-    padding: 0 10px;
+    padding: 0 15px;
     flex-wrap: no-wrap;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const HideMenu = styled.div`
+  display: flex;
+  align-items: center;
+  a:hover {
+    background-color: #5c7b85;
+    border-radius: 12px;
+    box-shadow: 0 0 0px 4px #5c7b85;
+  }
+  a {
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-right: 10px;
+    font-size: 14px;
+    padding: 0 15px;
   }
 
   @media (max-width: 768px) {
@@ -136,17 +153,18 @@ const Menu = styled.div`
 const RightMenu = styled.div`
   display: flex;
   align-items: center;
-
+  a:hover {
+    background-color: #5c7b85;
+    border-radius: 12px;
+    box-shadow: 0 0 0px 4px #5c7b85;
+  }
   a {
     font-weight: 600;
     text-transform: uppercase;
     margin-right: 10px;
-    font-size: 16px;
+    font-size: 13px;
+    padding: 0 15px;
   }
-`;
-
-const CustomMenu = styled(Button)`
-  cursor: pointer;
 `;
 
 const BurgerNav = styled.div`
