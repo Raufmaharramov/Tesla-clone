@@ -129,6 +129,7 @@ const Menu = styled.div`
   }
 `;
 
+// this menu will disapear
 const HideMenu = styled.div`
   display: flex;
   align-items: center;
